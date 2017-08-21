@@ -22,7 +22,7 @@ const loginRoutes = require('./routes/login');
 const snippetsRoutes = require('./routes/snippets');
 const searchRoutes = require('./routes/search')
 
-let url = 'mongodb://localhost:27017/codeSnippets';
+let url = 'mongodb://localhost:27017/code_snippets';
 
 // create express app
 const app = express();
@@ -120,7 +120,7 @@ mongoose.connect(url, (err, connection) => {
 // ============== LISTEN =================
 
 // connect to mongo via mongoose
-mongoose.connect('mongodb://localhost:27017/codeSnippets', {
+mongoose.connect('mongodb://localhost:27017/code_snippets', {
   useMongoClient: true
 })
 then(() => app.listen(3000, function() {
