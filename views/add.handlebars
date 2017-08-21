@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Home Page</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+  <a href="/logout">Logout</a>
+  <a href="/">Home</a>
+  <div class="wrapper" id="addWrapper">
+    <form id="snippet_form" class="add" action="/snippets" method="post">
+
+      <div class='input'>
+        <label for="text">Title</label>
+        <input class='add' id='text' type="text" name="title" value="{{snippet.title}}" placeholder="Title" />
+      </div>
+
+      <div class='input'>
+        <label for="body">Body</label>
+        <textarea class='add' id='body' name="body" value="{{snippet.body}}" placeholder="Body"></textarea>
+      </div>
+
+      <div class='input'>
+        <label for="notes">Notes</label>
+        <textarea class='add' id='notes' name="notes" value="{{snippet.notes}}" placeholder="Notes"></textarea>
+      </div>
+
+      <div class='input'>
+        <label for="language">Language</label>
+        <input class='add' id='language' type="text" name="language" value="{{snippet.language}}" placeholder="Language" />
+      </div>
+
+      <div class='input'>
+        <label for="tags">Tags</label>
+        <div id="tag_container">
+          {{#snippet.tags}}
+            <div class="tag_wrapper">
+              <input class='add tags' type="array" id="tag{{@index}}" name="tags[]" value="{{.}}" />
+              <button type="button" class="tag_remove tag_button">-</button>
+            </div>
+          {{/snippet.tags}}
+        </div>
+        <div class="tag_wrapper">
+          <input class='add tags' type="array" id="tag_add" value="" />
+          <button type="button" class="tag_add tag_button">+</button>
+        </div>
+        {{#if snippet._id}}
+          <input type="hidden" name="_id" value="{{snippet._id}}" />
+        {{/if}}
+        <div class="delete_or_add">
+          <span class="delete"><a href="/deleteSnippet/?id={{snippet._id}}">Delete Snippet</a></span>
+          <button class="updateButton" name="add"> Submit </button>
+        </div>
+      </div>
+
+    </form>
+  </div>
+  <script src="/js/snippets.js"></script>
+</body>
+
+</html>
