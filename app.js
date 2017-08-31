@@ -1,75 +1,63 @@
-// ===========PACKAGES===========
-
 const express = require('express');
 const handlebars = require('express-handlebars');
-const session = require('express-session');
-
-
 const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
+const session = require('express-session');
 const flash = require('express-flash-messages');
+const Lroutes = require('./routes/login');
+const Sroutes = require('./routes/search')
+const SNroutes = require('./routes/snippets')
+// require stuff for passport
+const passport = require('passport');
+// const LocalStrategy = require('passport-local').Strategy;
 
 const mongoose = require('mongoose');
+// bluebird is a promise library. checkout bluebirdjs.org
 const bluebird = require('bluebird');
+// set mongoose's promise library to be bluebird
 mongoose.Promise = bluebird;
-
+//require schema files
 const User = require('./models/user');
-const Snippet = require('./models/snippet');
+const Snippet = require('./models/snippet')
 
-const passport = require('passport');
-
-const loginRoutes = require('./routes/login');
-const snippetsRoutes = require('./routes/snippets');
-const searchRoutes = require('./routes/search')
-
-let url = 'mongodb://localhost:27017/code_snippets';
+const url = 'mongodb://localhost:27017/codesnippets';
 
 // create express app
 const app = express();
 
-
-// =========BOILER PLATE===========
-
-// for handlebars
+// tell express to use handlebars
 app.engine('handlebars', handlebars());
 app.set('views', './views');
 app.set('view engine', 'handlebars');
 
-
-// for express
 app.use(express.static('public'));
 
-//for bodyParser
+//tell express to use the bodyParser middleware to parse form data
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-
-// for express-session
-app.use(session({
-  //in the future this is not how to store passwords
-  secret: 'password',
-  resave: false, // doesn't save without changes
-  saveUninitialized: true // creates a session
-}));
+app.use(bodyParser.urlencoded({ extended: false })); //change to true?
 
 
-// for express-validator
-app.use(expressValidator());
+//express session
+app.use(
+  session({
+    secret: 'capsul',
+    resave: false,
+    saveUninitialized: true
+  })
+);
 
-//for passport
+// connect passport to express boilerplate
 app.use(passport.initialize());
-
-//for passport session
 app.use(passport.session());
-
-//for flash
 app.use(flash());
 
-console.log('test');
-// ============= ENDPOINTS ===============
 
+
+
+// this middleware function will check to see if we have a user in the session.
+// if not, we redirect to the login form.
+//endpoints
 const requireLogin = (req, res, next) => {
+  console.log('req.user', req.user);
   if (req.user) {
     next();
   } else {
@@ -77,19 +65,23 @@ const requireLogin = (req, res, next) => {
   }
 };
 
-app.get('/', requireLogin, function(req, res) {
-  // TODO: Find the active template
-  Snippet.find({
-      author: req.user.username
-    })
+app.get('/', requireLogin, (req, res) => {
+  Snippet.find({author: req.user.name})
     .then((snippets) => {
-      res.render('home', {
-        user: req.user,
-        snippets: snippets
-      })
+      res.render('home', {user: req.user, snippets: snippets})
     })
-    .catch(err => res.send('Can not find snippets'));
+    .catch(err => res.send('nope'));
 });
+
+app.get('/snippetsList', requireLogin, (req, res) => {
+  Snippet.find({author: req.user.name})
+    .then((snippets) => {
+      res.render('snippetsList', {user: req.user, snippets: snippets})
+    })
+    .catch(err => res.send('nope'));
+});
+
+
 
 app.get('/register', (req, res) => {
   res.render('register');
@@ -100,29 +92,27 @@ app.post('/register', (req, res) => {
   user.provider = 'local';
   user.setPassword(req.body.password);
 
-  user.save()
-    // good
+  user
+    .save()
+    // if good...
     .then(() => res.redirect('/'))
-    // no good
+    // if bad...
     .catch(err => console.log(err));
 });
 
-app.use('/', loginRoutes);
-app.use('/', snippetsRoutes);
-app.use('/', searchRoutes);
+app.use('/', Lroutes);
+app.use('/', Sroutes);
+app.use('/', SNroutes);
 
-//APP
-mongoose.connect(url, (err, connection) => {
-    if (!err) {
-      console.log('connected to Mongo');
-    });
-};
-// ============== LISTEN =================
+mongoose.connect(url, (err, conection) => {
+  if (!err)
+    console.log('connected to Mongo.');
 
-// connect to mongo via mongoose
-mongoose.connect('mongodb://localhost:27017/code_snippets', {
-  useMongoClient: true
-})
-then(() => app.listen(3000, function() {
-console.log('Winning!')
-});));
+});
+
+mongoose
+  // connect to mongo via mongoose
+  .connect('mongodb://localhost:27017/codey', { useMongoClient: true })
+  // now we can do whatever we want with mongoose.
+  // configure session support middleware with express-session
+  .then(() => app.listen(3000, () => console.log('ready to roll!!')));

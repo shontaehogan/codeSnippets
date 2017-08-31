@@ -3,31 +3,66 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Home Page</title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <title></title>
+  <link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
 
-  <div class="nav">
-    <a href="/logout">Logout</a>
-    <form class="search" action="/search" method="get">
-      <input class="search" type="text" name="mySnippets">
-      <button>Search</button>
-    </form>
-    <a href="/">Home</a>
-  </div>
+  <a href="/">Home</a>
 
-  <div class="wrapper" id="snippets">
+
+
+  <form class="search" action="/search" method="get">
+    <input  type="text" name="snippetsresults">
+    <button>Search</button>
+  </form>
+
+  <br>
+
+<div class="table">
+  <table border="1">
+    <tr>
+      <th>
+        Title
+      </th>
+      <th>
+        Body
+      </th>
+      <th>
+        Notes
+      </th>
+      <th>
+        Language
+      </th>
+      <th>
+        Tags
+      </th>
+      <th>
+        Author
+      </th>
+      <th>
+        Delete
+      </th>
+    </tr>
+    </br>
+
     {{#snippets}}
-      <a href="/snippets/add?id={{ _id }}">
-        <p class="title">{{title}}</p>
-      </a>
+      <tr>
+        <td>{{title}}</td>
+        <td>{{body}}</td>
+        <td>{{notes}}</td>
+        <td>{{language}}</td>
+        <td>{{tags}}</td>
+        <td>{{author}}</td>
+        <td><a href="/delete/?id={{_id}}">Delete</a></td>
+      </tr>
     {{/snippets}}
-    <form class="add" action="/snippets/add" method="get">
-      <button class='addButton' name="add"> + </button>
-    </form>
-  </div>
+    </div>
+
+
+
 </body>
 
 </html>

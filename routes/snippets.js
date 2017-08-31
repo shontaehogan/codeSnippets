@@ -1,10 +1,14 @@
 const express = require('express');
 const routes = express.Router();
 const User = require('../models/user');
-const Snippet = require('../models/snippet')
+const Snippet = require('../models/snippet');
+const flash = require('express-flash-messages');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
 
 const requireLogin = (req, res, next) => {
+  console.log('req.user', req.user);
   if (req.user) {
     next();
   } else {
@@ -13,52 +17,43 @@ const requireLogin = (req, res, next) => {
 };
 
 routes.use(requireLogin);
-//retrieves a form
-routes.get('/snippets/add', (req, res) => {
 
-  // Check if req.query.id exists.  If so, load that snippet from mongo
-  // and then send that object to the form.
-  if (req.query.id) {
-    Snippet.findById(req.query.id)
-      // render form with this item
-      .then(snippet => res.render('add', {
-        snippet: snippet
-      }));
-  } else {
-    res.render('add');
-  }
+
+
+routes.get('/list/add', (req, res) => {
+    if (req.query.id) {
+      Snippet.findById(req.query.id)
+        // render form with this item
+        .then(snippet => res.render('add', { user: request.user, snippets: snippets}));
+    } else {
+      res.render('add');
+    }
 });
 
 routes.post('/snippets', (req, res) => {
-  if (!req.body._id) {
-    req.body._id = new mongoose.mongo.ObjectID();
+
+  if (!req.body.id){
+    req.body.id = new mongoose.mongo.ObjectID();
   }
-
-  req.body.author = req.user.username;
-  console.log(req.body);
-
-  req.body.tags = req.body.tags.filter((item) => {
-    return item !== ''
-  });
-
-  Snippet.findByIdAndUpdate(req.body._id, req.body, {
-      upsert: true
-    })
+  req.body.userID = req.user.id;
+  Snippet.findByIdAndUpdate(req.body.id, req.body, { upsert: true })
     .then(() => res.redirect('/'))
     // catch validation errors
     .catch(err => {
       console.log(err);
-      res.render('snippets', {
+      res.render('add', {
         errors: err.errors,
-        item: req.body
+        snippet: req.body
       });
     });
 });
 
-routes.get('/deleteSnippet', (req, res) => {
-  Snippet.findById(req.query.id).remove()
-    // then redirect to the homepage
-    .then(() => res.redirect('/'));
+routes.get('/delete', (req, res) => {
+  Snippet.findById(req.query.id)
+    .remove()
+    .then(() => res.redirect('/snippetsList'));
 });
+
+
 
 module.exports = routes;

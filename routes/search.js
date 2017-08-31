@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 const Snippet = require('../models/snippet');
-const Users = require('../models/users');
+const bodyParser = require('body-parser');
 
 const requireLogin = (req, res, next) => {
   if (req.user) {
@@ -14,22 +14,33 @@ const requireLogin = (req, res, next) => {
 routes.use(requireLogin);
 
 routes.get('/search', (req, res) => {
-  // If req.query.mySnippets is set, look through mongo to find any snippets
-  // whose titles match
-  let search = req.query.mySnippets;
+
+  let search = req.query.snippetsresults;
 
   Snippet.find({
-      author: req.user.username,
+      author: req.user.name,
       $or: [{
-        'language': search
-      }, {
-        tags: search
-      }]
+          'language': search
+        },
+        {
+          'tags': search
+        }, {
+          'title': search
+        },
+        {
+          'notes': search
+        }, {
+          'author': search
+        }
+      ]
     })
+
     .then(snippets => res.render('search', {
       snippets: snippets
     }))
-    .catch(err => res.send('Can not find snippet.'));
+
+    .catch(err => res.send('Snippet no found'));
+
 });
 
 module.exports = routes;

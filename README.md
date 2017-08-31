@@ -18,3 +18,12 @@ allow you to see a list of all your snippets for a specific tag
 allow you to look at an individual snippet
 have an API to allow for creating and viewing of snippets as listed above
 # codeSnippets
+
+username: shontae
+password: shontae1
+
+username: cj
+password: cj1
+
+username: nyree
+password: nyree1

@@ -1,27 +1,23 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+   <h1>Login</h1>
 
-<head>
-  <meta charset="utf-8">
-  <title></title>
-  <link rel="stylesheet" href="/styles.css" />
-</head>
-
-<body>
-  <div class="wrapper">
-    <span>Login</span>
-
-    <form class="login" action="/login" method="post">
-      <input type="text" name="username" placeholder="Username" /><br />
-      <input type="password" name="password" placeholder="Password" /><br />
-      <button>Login</button>
-    </form>
 
     {{#if failed}}
-      Login failed. <a href="/register">Not a member? Register here.</a>
+    Login failed :(
     {{/if}}
-  </div>
 
-</body>
+    <form action="/login" method="post">
+      Email: <input type="text" name="username" placeholder="Username" /><br />
+      Password: <input type="password" name="password" placeholder="Password" /><br />
+      <button>login</button> <a href="/register"><button>Create Account</button></a>
+    </form>
 
+  </body>
 </html>

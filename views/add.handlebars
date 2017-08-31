@@ -1,64 +1,64 @@
 <!DOCTYPE html>
 <html>
-
-<head>
-  <meta charset="utf-8">
-  <title>Home Page</title>
-  <link rel="stylesheet" href="/styles.css">
-</head>
-
-<body>
-  <a href="/logout">Logout</a>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+  </head>
   <a href="/">Home</a>
-  <div class="wrapper" id="addWrapper">
-    <form id="snippet_form" class="add" action="/snippets" method="post">
+  <br>
 
-      <div class='input'>
-        <label for="text">Title</label>
-        <input class='add' id='text' type="text" name="title" value="{{snippet.title}}" placeholder="Title" />
-      </div>
 
-      <div class='input'>
-        <label for="body">Body</label>
-        <textarea class='add' id='body' name="body" value="{{snippet.body}}" placeholder="Body"></textarea>
-      </div>
+  <div class="">
+    <form class="addForm" action="/snippets" method="post">
+      <label for="title">Title</label>
+      <input type="text" name="title" value="{{snippet.title}}" placeholder="Title"/>
+      <div class="fieldError">{{errors.title.message}}</div>
 
-      <div class='input'>
-        <label for="notes">Notes</label>
-        <textarea class='add' id='notes' name="notes" value="{{snippet.notes}}" placeholder="Notes"></textarea>
-      </div>
+      <label for="body">Body</label>
+      <textarea type="textarea" row="5" col="5" name="body" value="{{snippet.body}}" placeholder="snippet"/></textarea>
+      <div class="fieldError">{{errors.body.message}}</div>
 
-      <div class='input'>
-        <label for="language">Language</label>
-        <input class='add' id='language' type="text" name="language" value="{{snippet.language}}" placeholder="Language" />
-      </div>
+      <label for="notes">Notes</label>
+      <input type="text" name="notes" value="{{snippet.notes}}" placeholder="notes"/>
+      <div class="fieldError">{{errors.notes.message}}</div>
 
-      <div class='input'>
-        <label for="tags">Tags</label>
-        <div id="tag_container">
-          {{#snippet.tags}}
-            <div class="tag_wrapper">
-              <input class='add tags' type="array" id="tag{{@index}}" name="tags[]" value="{{.}}" />
-              <button type="button" class="tag_remove tag_button">-</button>
-            </div>
-          {{/snippet.tags}}
-        </div>
-        <div class="tag_wrapper">
-          <input class='add tags' type="array" id="tag_add" value="" />
-          <button type="button" class="tag_add tag_button">+</button>
-        </div>
-        {{#if snippet._id}}
-          <input type="hidden" name="_id" value="{{snippet._id}}" />
-        {{/if}}
-        <div class="delete_or_add">
-          <span class="delete"><a href="/deleteSnippet/?id={{snippet._id}}">Delete Snippet</a></span>
-          <button class="updateButton" name="add"> Submit </button>
-        </div>
-      </div>
+      <label for="language">Language</label>
+      <input type="text" name="language" value="{{snippet.language}}" placeholder="language"/>
+      <div class="fieldError">{{errors.language.message}}</div>
+    <div class="">
 
+    <div class="tagsdiv">
+      <label for="tags">tags</label>
+      <input class='add tags' type="text" id="tags" name="tags" value="{{snippet.tags}}" placeholder="tags"/>
+      <div class="fieldError">{{errors.tags.message}}</div>
+      <label for="author">author</label>
+      <input class='author' type="text" id="author" name="author" value="{{snippet.author}}" placeholder="author"/>
+      <div class="fieldError">{{errors.author.message}}</div>
+
+
+    </div>
+
+
+
+  <div class="">
+    {{#if snippet._id}}
+      <input type="hidden" name="_id" value="{{snippet._id}}" />
+    {{/if}}
+    <div class="">
+    <button class="update" name="add"> Submit </button>
+
+    </div>
+  </div>
+  </div>
     </form>
   </div>
-  <script src="/js/snippets.js"></script>
-</body>
 
+
+
+</script>
+  </body>
 </html>

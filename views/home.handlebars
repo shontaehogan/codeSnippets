@@ -3,32 +3,48 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Home Page</title>
-  <link rel="stylesheet" href="/css/styles.css">
+  <title></title>
+  <link href="https://fonts.googleapis.com/css?family=Cinzel" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
 </head>
 
 <body>
 
+  <h1>Home</h1>
+
+  <h2>Hello {{user.name}}!</h2>
+
+  <a href="/logout">Log out</a>
+
+
   <div class="nav">
-    <a href="/logout">Logout</a>
     <form class="search" action="/search" method="get">
-      <input class="search" type="text" name="mySnippets">
+      <input type="text" name="snippetsresults">
       <button>Search</button>
     </form>
   </div>
 
-  <span> {{user.name}}'s Snippets </span>
 
-  <div class="wrapper" id="snippets">
+
+
+  <a class="button" href="/snippetsList">See all Snippets</a>
+
+  <br>
+
+  <div class="">
     {{#snippets}}
-      <a href="/snippets/add?id={{ _id }}">
-        <p class="title">{{title}}</p>
-      </a>
+      <a href="/search?snippetsresults={{title}}">{{title}}</a>
     {{/snippets}}
-    <form class="add" action="/snippets/add" method="get">
-      <button class='addButton' name="add"> + </button>
+
+    <form class="" action="/list/add" method="get">
+      <button name="add">add</button>
     </form>
   </div>
+
+
+
 </body>
 
 </html>
+
+<body>

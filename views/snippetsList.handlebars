@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <a href="/">Home</a>
+
+    <table class="snippet_table" border="1">
+      <tr>
+        <th>
+          Title
+        </th>
+        <th>
+          Body
+        </th>
+        <th>
+          Notes
+        </th>
+        <th>
+          Language
+        </th>
+        <th>
+          Tags
+        </th>
+        <th>
+          Author
+        </th>
+        <th>
+          Delete
+        </th>
+      </tr>
+    </br>
+
+      {{#snippets}}
+      <tr>
+        <td>{{snippets.title}}</td>
+        <td>{{body}}</td>
+        <td>{{notes}}</td>
+        <td>{{language}}</td>
+        <td>{{tags}}</td>
+        <td>{{author}}</td>
+        <td><a href="/delete/?id={{_id}}">Delete</a></td>
+      </tr>
+      {{/snippets}}
+
+    </table>
