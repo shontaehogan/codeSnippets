@@ -3,9 +3,9 @@ const handlebars = require('express-handlebars');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const flash = require('express-flash-messages');
-const Lroutes = require('./routes/login');
-const Sroutes = require('./routes/search')
-const SNroutes = require('./routes/snippets')
+const loginRoutes = require('./routes/login');
+const searchRoutes = require('./routes/search')
+const snippetsRoutes = require('./routes/snippets')
 // require stuff for passport
 const passport = require('passport');
 // const LocalStrategy = require('passport-local').Strategy;
@@ -39,7 +39,7 @@ app.use(bodyParser.urlencoded({ extended: false })); //change to true?
 //express session
 app.use(
   session({
-    secret: 'capsul',
+    secret: 'password',
     resave: false,
     saveUninitialized: true
   })
@@ -53,7 +53,7 @@ app.use(flash());
 
 
 
-// this middleware function will check to see if we have a user in the session.
+// this middleware function that checkd to see if we have a user in the session.
 // if not, we redirect to the login form.
 //endpoints
 const requireLogin = (req, res, next) => {
@@ -70,7 +70,7 @@ app.get('/', requireLogin, (req, res) => {
     .then((snippets) => {
       res.render('home', {user: req.user, snippets: snippets})
     })
-    .catch(err => res.send('nope'));
+    .catch(err => res.send('negative'));
 });
 
 app.get('/snippetsList', requireLogin, (req, res) => {
@@ -78,7 +78,7 @@ app.get('/snippetsList', requireLogin, (req, res) => {
     .then((snippets) => {
       res.render('snippetsList', {user: req.user, snippets: snippets})
     })
-    .catch(err => res.send('nope'));
+    .catch(err => res.send('negative'));
 });
 
 
@@ -100,9 +100,9 @@ app.post('/register', (req, res) => {
     .catch(err => console.log(err));
 });
 
-app.use('/', Lroutes);
-app.use('/', Sroutes);
-app.use('/', SNroutes);
+app.use('/', loginRoutes);
+app.use('/', searchRoutes);
+app.use('/', snippetsRoutes);
 
 mongoose.connect(url, (err, conection) => {
   if (!err)
@@ -112,7 +112,6 @@ mongoose.connect(url, (err, conection) => {
 
 mongoose
   // connect to mongo via mongoose
-  .connect('mongodb://localhost:27017/codey', { useMongoClient: true })
-  // now we can do whatever we want with mongoose.
+  .connect('mongodb://localhost:27017/please', { useMongoClient: true })
   // configure session support middleware with express-session
-  .then(() => app.listen(3000, () => console.log('ready to roll!!')));
+  .then(() => app.listen(3000, () => console.log('winning!!')));

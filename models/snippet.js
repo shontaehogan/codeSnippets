@@ -5,7 +5,7 @@ const bcrypt = require('bcryptjs');
 
 const Schema = mongoose.Schema;
 
-const snptSchema = new Schema({
+const snippetSchema = new Schema({
   id: { type: String},
   title: { type: String, required: true },
   body: { type: String, required: true },
@@ -15,6 +15,6 @@ const snptSchema = new Schema({
   author: {type: String, required: true}
 });
 
-const Snippet = mongoose.model('Snippet', snptSchema);
+const Snippet = mongoose.model('Snippet', snippetSchema);
 
 module.exports = Snippet;

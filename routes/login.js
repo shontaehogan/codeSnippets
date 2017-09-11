@@ -14,7 +14,7 @@ passport.use(
         if (user) {
           done(null, user);
         } else {
-          done(null, null, { message: 'There was no user with this email and password.' });
+          done(null, null, { message: 'Email and password not recognized, please register.' });
         }
       })
       // there was a problem

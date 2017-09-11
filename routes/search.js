@@ -39,7 +39,7 @@ routes.get('/search', (req, res) => {
       snippets: snippets
     }))
 
-    .catch(err => res.send('Snippet no found'));
+    .catch(err => res.send('Snippet not found'));
 
 });
 
